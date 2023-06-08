@@ -227,15 +227,39 @@ class DualQuaternion {
 
 		this.real.multiplyScalar( 1 / norm );
 		this.dual.multiplyScalar( 1 / norm );
+		// const clone = this.clone();
+		// const clone2 = this.clone().conjugate();
+		// console.log(clone.clone().multiply(clone2))
+		// console.log(clone2.real.multiply(clone.dual).add(clone2.dual.multiply(clone.real)))
 
 		return this;
 
-		// const magnitude = this.real.dot(this.real);
+	}
 
-		// this.real.multiplyScalar(  1 / magnitude );
-		// this.dual.multiplyScalar(  1 / magnitude );
+	normalize2() {
+		const magnitude = this.real.dot(this.real);
 
-		// return this;
+		this.real.multiplyScalar(  1 / magnitude );
+		this.dual.multiplyScalar(  1 / magnitude );
+
+
+		return this;
+
+	}
+
+	normalize3() {
+
+		const length2 = this.real.lengthSq();
+		const length = Math.sqrt(length2);
+
+		this.real.multiplyScalar( 1 / length );
+
+		const dot = this.real.dot( this.dual );
+		this.dual.multiplyScalar(1/length)
+		const realc = this.real.clone().multiplyScalar(-dot*length2)
+		this.dual.add(realc)
+
+		return this
 
 		// const magnitude = Math.sqrt( this.real.lengthSq() );
 
