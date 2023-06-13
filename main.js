@@ -39,7 +39,7 @@ const worldY = new THREE.Vector3(0, 1, 0);
 const worldZ = new THREE.Vector3(0, 0, 1);
 
 
-const translation0 = new THREE.Quaternion(0., 0.3, -0.2, 0);
+const translation0 = new THREE.Quaternion(0., 0.3, -0., 0);
 const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 3);
 const dq0 = DualQuaternion.setFromRotationTranslation(rotation0, translation0);
 
@@ -71,7 +71,7 @@ const magenta = new THREE.MeshLambertMaterial({color: 0xFF00FF, wireframe: true}
 const white = new THREE.MeshLambertMaterial({color: 0xffffff, wireframe: false, transparent: true, opacity: 0.8});
 const black = new THREE.MeshLambertMaterial({color: 0x000000, wireframe: false});
 
-const geometryOrigin = new THREE.SphereGeometry(0.01, 32, 32);
+const geometryOrigin = new THREE.SphereGeometry(0.3, 32, 32);
 const origin = new THREE.Mesh(geometryOrigin, white)
 
 scene.add(origin)
@@ -114,7 +114,7 @@ scene.add(conesLinearBlend)
 
 const gridDivs = 50;
 const conesGrid = new THREE.InstancedMesh(geometrySampleCone, black, (gridDivs+1)*(gridDivs+1));
-// scene.add(conesGrid);
+scene.add(conesGrid);
 
 function createGrid() {
 	let step = 1 / gridDivs;
