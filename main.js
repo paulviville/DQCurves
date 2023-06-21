@@ -38,27 +38,40 @@ const worldX = new THREE.Vector3(1, 0, 0);
 const worldY = new THREE.Vector3(0, 1, 0);
 const worldZ = new THREE.Vector3(0, 0, 1);
 
+// red
+const translation0 = new THREE.Quaternion(0., 0.3, 0., 0);
+const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+// rotation0.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, Math.PI / 3))
 
-const translation0 = new THREE.Quaternion(0., 0.3, -0., 0);
-const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 3);
 const dq0 = DualQuaternion.setFromRotationTranslation(rotation0, translation0);
-
+// green
 const translation1 = new THREE.Quaternion(0., 0.3, 0., 0);
-const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldX, -Math.PI / 2);
+// const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, -Math.PI / 2);
+rotation1.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, -2*Math.PI / 6))
 const dq1 = DualQuaternion.setFromRotationTranslation(rotation1, translation1);
-
+// blue
 const translation2 = new THREE.Quaternion(0, 0.3, 0, 0);
 const rotation2 = new THREE.Quaternion().setFromAxisAngle(worldZ, -3*Math.PI / 7);
 rotation2.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, Math.PI / 6))
 const dq2 = DualQuaternion.setFromRotationTranslation(rotation2, translation2);
 
-
+// yellow
 const translation3 = new THREE.Quaternion(0, 0.3, 0, 0);
-const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldY, -2*Math.PI / 7);
+const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldX, -2*Math.PI / 7);
 rotation3.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 2*Math.PI / 3))
 const dq3 = DualQuaternion.setFromRotationTranslation(rotation3, translation3);
 // dq3.multiply(dq2)
 
+// const d0 = dq0.clone()
+// const d1 = dq1.clone()
+// const d2 = dq2.clone()
+
+
+// d0.invert()
+// console.log(d0)
+// d1.multiply(d0).normalize();
+// dq3.multiplyDualQuaternions(d1, d2).normalize()
 
 const geometryCone = new THREE.ConeGeometry(0.02, 0.1, 3, 1);
 geometryCone.translate(0, 0.05, 0)
@@ -108,13 +121,11 @@ geometrySampleCone.translate(0, 0.0125, 0);
 const nbSamples = 240;
 
 const conesLinearBlend = new THREE.InstancedMesh(geometrySampleCone, black, nbSamples);
-scene.add(conesLinearBlend)
 
 
 
 const gridDivs = 50;
 const conesGrid = new THREE.InstancedMesh(geometrySampleCone, black, (gridDivs+1)*(gridDivs+1));
-scene.add(conesGrid);
 
 function createGrid() {
 	let step = 1 / gridDivs;
@@ -228,11 +239,6 @@ const sphereBezier = new THREE.InstancedMesh(geometrySampleSphere, magenta, nbSa
 const conesBezier1 = new THREE.InstancedMesh(geometrySampleCone, cyan, nbSamples);
 const conesBezier2 = new THREE.InstancedMesh(geometrySampleCone, cyan, nbSamples);
 const conesBezier3 = new THREE.InstancedMesh(geometrySampleCone, cyan, nbSamples);
-// scene.add(conesBezier)
-// scene.add(conesBezier1)
-// scene.add(sphereBezier)
-// scene.add(conesBezier2)
-// scene.add(conesBezier3)
 
 function bezierSamples() {
 	const dqSamples = deCasteljauDQ(nbSamples, [dq0.clone(), dq1.clone(), dq2.clone(), dq3.clone()]);
@@ -281,7 +287,6 @@ function bezierSamples2() {
 
 
 const conesFourPoints = new THREE.InstancedMesh(geometrySampleCone, cyan, 4096);
-scene.add(conesFourPoints);
 
 const cmap1 = new CMap1;
 cmap1.createEmbedding(cmap1.vertex);
@@ -342,7 +347,8 @@ function fourPoints() {
 fourPoints()
 const fptsRenderer = new Renderer(cmap1)
 fptsRenderer.vertices.create({color: new THREE.Color(0xff00ff)});
-fptsRenderer.vertices.addTo(scene)
+
+
 
 let gridDivs2 = 50;
 function computeGrid() {
@@ -372,7 +378,8 @@ function computeGrid() {
 
 
 const conesTriGrid = new THREE.InstancedMesh(geometrySampleCone, cyan, 40000);
-scene.add(conesTriGrid);
+
+
 
 
 function setGrid() {
@@ -393,11 +400,8 @@ function setGrid() {
 
 
 const conesLagrange = new THREE.InstancedMesh(geometrySampleSphere, magenta, nbSamples);
-// scene.add(conesLagrange);
 
 const conesLagrangeDQ = new THREE.InstancedMesh(geometrySampleCone, cyan, nbSamples);
-// scene.add(conesLagrangeDQ);
-
 
 
 function nevilleAlgorithm(target) {
@@ -472,10 +476,11 @@ Lagrange()
 
 
 const conesCatmullRom = new THREE.InstancedMesh(geometrySampleSphere, magenta, nbSamples);
-// scene.add(conesCatmullRom);
 
 const conesCatmullRomDQ = new THREE.InstancedMesh(geometrySampleCone, cyan, nbSamples);
-// scene.add(conesCatmullRomDQ);
+
+
+
 
 
 function catmullRomInterpolation(t, pts) {
@@ -560,6 +565,70 @@ catmullRomSpline()
 
 
 
+const conesHermite = new THREE.InstancedMesh(geometrySampleSphere, magenta, nbSamples);
+
+const conesHermiteDQ = new THREE.InstancedMesh(geometrySampleCone, cyan, nbSamples);
+
+
+function hermiteInterpolation(p0, p1, v0, v1, t) {
+	const h0 = p0.clone().addScaledVector(v0, t);
+	const h1 = p0.clone().lerp(p1, t);
+	const h2 = p1.clone().addScaledVector(v1, 1 - t);
+
+	h0.lerp(h1, t);
+	h1.lerp(h2, t);
+
+	h0.lerp(h1, t);
+	return h0;
+}
+
+function hermiteInterpolationDQ(d0, d1, vd0, vd1, t) {
+	const dh0 = d0.clone().addScaledDualQuaternion(vd0, t);
+	const dh1 = d0.clone().lerp(d1, t);
+	const dh2 = d1.clone().addScaledDualQuaternion(vd1, t-1);
+
+	dh0.lerp(dh1, t);
+	dh1.lerp(dh2, t);
+
+	dh0.lerp(dh1, t);
+
+	dh0.normalize()
+	return dh0;
+}
+
+function hermiteSpline() {
+	const samples = []
+	const samplesDQ = []
+
+	const p0 = dq0.transform(world0);
+	const p1 = dq1.transform(world0);
+	const p2 = dq2.transform(world0);
+	const p3 = dq3.transform(world0);
+	const v01 = p1.clone().sub(p0)
+	const v32 = p2.clone().sub(p3)
+
+	const d01 = dq0.clone().invert().premultiply(dq1).normalize();
+	const d32 = dq2.clone().invert().premultiply(dq3).normalize();
+
+	for(let i = 0; i < nbSamples; ++i) {
+		samples.push(hermiteInterpolation(p0, p3, v01, v32, i / (nbSamples - 1)));
+		samplesDQ.push(hermiteInterpolationDQ(dq0, dq3, d01, d32,i / (nbSamples - 1)))
+		
+	}
+	// d0.invert()
+	// console.log(d0)
+	// d1.multiply(d0).normalize();
+	// dq3.multiplyDualQuaternions(d1, d2).normalize()
+	const scale = new THREE.Vector3(0.25, 1, 0.25);
+	const matrix = new THREE.Matrix4();
+	for(let i = 0; i < samples.length; ++i){
+		matrix.compose(samplesDQ[i].getTranslation(), samplesDQ[i].getRotation(), scale);
+		conesHermiteDQ.setMatrixAt(i, matrix);
+		matrix.makeTranslation(samples[i].x, samples[i].y, samples[i].z)
+		conesHermite.setMatrixAt(i, matrix);
+	}
+}
+hermiteSpline()
 
 
 
@@ -571,11 +640,28 @@ catmullRomSpline()
 
 
 
+scene.add(conesLinearBlend)
+scene.add(conesGrid);
 
+// scene.add(conesBezier)
+// scene.add(conesBezier1)
+// scene.add(sphereBezier)
+// scene.add(conesBezier2)
+// scene.add(conesBezier3)
 
+// scene.add(conesFourPoints);
 
+// fptsRenderer.vertices.addTo(scene)
 
+scene.add(conesTriGrid);
+// scene.add(conesLagrangeDQ);
+// scene.add(conesLagrange);
 
+// scene.add(conesCatmullRom);
+// scene.add(conesCatmullRomDQ);
+
+scene.add(conesHermite)
+scene.add(conesHermiteDQ)
 
 const grid = new THREE.GridHelper(1, 10)
 scene.add(grid)
