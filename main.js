@@ -7,9 +7,9 @@ import CMap1 from './CMapJS/CMap/CMap1.js';
 import { cutAllEdges } from './CMapJS/Utils/Subdivision.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xeeeeee);
+scene.background = new THREE.Color(0xffffff);
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.001, 1000.0);
-camera.position.set(0, 0.5, 1.5);
+camera.position.set(-0.15, 0.33, 0.81).multiplyScalar(0.75);
 const renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
@@ -31,37 +31,159 @@ window.addEventListener('resize', function() {
     camera.updateProjectionMatrix();
 });
 
-
+window.printCam = function () {
+	console.log(camera.position)
+}
 
 const world0 = new THREE.Vector3(0, 0, 0);
 const worldX = new THREE.Vector3(1, 0, 0);
 const worldY = new THREE.Vector3(0, 1, 0);
 const worldZ = new THREE.Vector3(0, 0, 1);
 
+
+// // red
+// const translation0 = new THREE.Quaternion(0.5, 0, 0., 0);
+// const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, 1*Math.PI / 2);
+// // rotation0.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, .7*Math.PI / 3))
+// const dq0 = DualQuaternion.setFromRotationTranslation(rotation0, translation0);
+// // const dq0 = DualQuaternion.setFromTranslationRotation(rotation0, translation0);
+// // green
+// const translation1 = new THREE.Quaternion(0.2, 0., 0., 0);
+// // const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+// const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldX, 1*Math.PI / 2);
+// // const dq1 = DualQuaternion.setFromRotationTranslation(rotation1, translation1);
+// const dq1 = DualQuaternion.setFromTranslationRotation(rotation1, translation1);
+// // // blue
+// // const translation2 = new THREE.Quaternion(0, 0.15, 0, 0);
+// // const rotation2 = new THREE.Quaternion().setFromAxisAngle(worldZ, -2*Math.PI / 7);
+// // rotation2.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 1*Math.PI / 6))
+// const dq2 = new DualQuaternion();
+
+// // // yellow
+// // const translation3 = new THREE.Quaternion(0, 0.2, 0, 0);
+// // // const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldZ, -0.75*Math.PI / 7);
+// // const rotation3 = new THREE.Quaternion()
+// // // rotation3.multiply(new THREE.Quaternion().setFromAxisAngle(worldY, 0.75*Math.PI / 3))
+// const dq3 = new DualQuaternion();
+// // // dq3.multiply(dq2)
+
+// dq2.multiplyDualQuaternions(dq0, dq1.clone().invert())
+// dq3.multiplyDualQuaternions(dq2, dq2.clone().invert())
+// dq1.multiplyDualQuaternions(dq3, dq2.clone().invert())
+// // dq3.copy(dq1)
+// // dq0.multiply(dq0.clone().invert())
+// // dq0.multiplyScalar(-1).normalize()
+
+// console.log(dq2.getTranslation())
+// console.log(new THREE.Euler().setFromQuaternion(dq2.getRotation()))
+
 // red
-const translation0 = new THREE.Quaternion(0., 0.3, 0., 0);
-const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
-// rotation0.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, Math.PI / 3))
+const translation0 = new THREE.Quaternion(-0.2, -0.1, 0., 0);
+const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, 0.8*Math.PI / 2);
+rotation0.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, .7*Math.PI / 3))
 
 const dq0 = DualQuaternion.setFromRotationTranslation(rotation0, translation0);
 // green
-const translation1 = new THREE.Quaternion(0., 0.3, 0., 0);
+const translation1 = new THREE.Quaternion(-0.2, 0.2, 0., 0);
 // const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
-const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, -Math.PI / 2);
-rotation1.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, -2*Math.PI / 6))
+const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldY, -0.95*Math.PI / 2);
+rotation1.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 2*Math.PI / 6))
 const dq1 = DualQuaternion.setFromRotationTranslation(rotation1, translation1);
 // blue
-const translation2 = new THREE.Quaternion(0, 0.3, 0, 0);
-const rotation2 = new THREE.Quaternion().setFromAxisAngle(worldZ, -3*Math.PI / 7);
-rotation2.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, Math.PI / 6))
+const translation2 = new THREE.Quaternion(0, 0.15, 0, 0);
+const rotation2 = new THREE.Quaternion().setFromAxisAngle(worldZ, -2*Math.PI / 7);
+rotation2.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 1*Math.PI / 6))
 const dq2 = DualQuaternion.setFromRotationTranslation(rotation2, translation2);
 
 // yellow
-const translation3 = new THREE.Quaternion(0, 0.3, 0, 0);
-const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldX, -2*Math.PI / 7);
-rotation3.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 2*Math.PI / 3))
+const translation3 = new THREE.Quaternion(0, 0.2, 0, 0);
+// const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldZ, -0.75*Math.PI / 7);
+const rotation3 = new THREE.Quaternion()
+// rotation3.multiply(new THREE.Quaternion().setFromAxisAngle(worldY, 0.75*Math.PI / 3))
 const dq3 = DualQuaternion.setFromRotationTranslation(rotation3, translation3);
 // dq3.multiply(dq2)
+
+
+// // red
+// const translation0 = new THREE.Quaternion(-0.2, -0.1, 0.15, 0);
+// const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 4)
+// const dq0 = DualQuaternion.setFromTranslationRotation(rotation0, translation0);
+// // green
+// const translation1 = new THREE.Quaternion(-0.15, 0.10, 0., 0);
+// // const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+// const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 4)
+// const dq1 = DualQuaternion.setFromTranslationRotation(rotation1, translation1);
+// // blue
+// const translation2 = new THREE.Quaternion(0.1, 0.1, 0.2, 0);
+// const rotation2 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 4)
+// const dq2 = DualQuaternion.setFromTranslationRotation(rotation2, translation2);
+
+// // yellow
+// const translation3 = new THREE.Quaternion(0, 0.2, 0, 0);
+// // const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldZ, -0.75*Math.PI / 7);
+// const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 4)
+// // rotation3.multiply(new THREE.Quaternion().setFromAxisAngle(worldY, 0.75*Math.PI / 3))
+// const dq3 = DualQuaternion.setFromTranslationRotation(rotation3, translation3);
+// // dq3.multiply(dq2)
+
+
+
+
+// // red
+// const translation0 = new THREE.Quaternion(0., 0.3, 0., 0);
+// const rotation0 = new THREE.Quaternion().setFromAxisAngle(worldZ, 0.8*Math.PI / 2);
+// rotation0.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, .7*Math.PI / 3))
+
+// const dq0 = DualQuaternion.setFromRotationTranslation(rotation0, translation0);
+// // green
+// const translation1 = new THREE.Quaternion(0., 0.3, 0., 0);
+// // const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+// const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldY, -0.95*Math.PI / 2);
+// rotation1.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 2*Math.PI / 6))
+// const dq1 = DualQuaternion.setFromRotationTranslation(rotation1, translation1);
+// // blue
+// const translation2 = new THREE.Quaternion(0, 0.3, 0, 0);
+// const rotation2 = new THREE.Quaternion().setFromAxisAngle(worldZ, -1*Math.PI / 7);
+// rotation2.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, 1*Math.PI / 6))
+// const dq2 = DualQuaternion.setFromRotationTranslation(rotation2, translation2);
+
+// // yellow
+// const translation3 = new THREE.Quaternion(0, 0.3, 0, 0);
+// // const rotation3 = new THREE.Quaternion().setFromAxisAngle(worldZ, -0.75*Math.PI / 7);
+// const rotation3 = new THREE.Quaternion();
+// // rotation3.multiply(new THREE.Quaternion().setFromAxisAngle(worldY, 0.75*Math.PI / 3))
+// const dq3 = DualQuaternion.setFromRotationTranslation(rotation3, translation3);
+// // dq3.multiply(dq2)
+
+
+
+// // red
+// const translation0 = new THREE.Quaternion(-0.4, 0.2, -0.2, 0);
+// const rotation0 = new THREE.Quaternion();
+// // const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+// // rotation0.multiply(new THREE.Quaternion().setFromAxisAngle(worldX, Math.PI / 3))
+
+// const dq0 = DualQuaternion.setFromRotationTranslation(rotation0, translation0);
+// // green
+// const translation1 = new THREE.Quaternion(-0.125, -0.1, 0.25, 0);
+// // const rotation1 = new THREE.Quaternion().setFromAxisAngle(worldZ, Math.PI / 2);
+// const rotation1 = new THREE.Quaternion();
+
+// const dq1 = DualQuaternion.setFromRotationTranslation(rotation1, translation1);
+// // blue
+// const translation2 = new THREE.Quaternion(0.25, 0.0, -0.25, 0);
+// const rotation2 = new THREE.Quaternion()
+// const dq2 = DualQuaternion.setFromRotationTranslation(rotation2, translation2);
+
+// // yellow
+// const translation3 = new THREE.Quaternion(0.4, 0, 0.25, 0);
+// const rotation3 = new THREE.Quaternion()
+// const dq3 = DualQuaternion.setFromRotationTranslation(rotation3, translation3);
+// // dq3.multiply(dq2)
+
+
+
+
 
 // const d0 = dq0.clone()
 // const d1 = dq1.clone()
@@ -73,21 +195,22 @@ const dq3 = DualQuaternion.setFromRotationTranslation(rotation3, translation3);
 // d1.multiply(d0).normalize();
 // dq3.multiplyDualQuaternions(d1, d2).normalize()
 
-const geometryCone = new THREE.ConeGeometry(0.02, 0.1, 3, 1);
+const geometryCone = new THREE.ConeGeometry(0.02, 0.1, 45, 1);
 geometryCone.translate(0, 0.05, 0)
-const red = new THREE.MeshLambertMaterial({color: 0xff0000, wireframe: true});
-const green = new THREE.MeshLambertMaterial({color: 0x00ff00, wireframe: true});
-const blue = new THREE.MeshLambertMaterial({color: 0x0000ff, wireframe: true});
-const yellow = new THREE.MeshLambertMaterial({color: 0xffff00, wireframe: true});
-const cyan = new THREE.MeshLambertMaterial({color: 0x00FFFF, wireframe: true});
-const magenta = new THREE.MeshLambertMaterial({color: 0xFF00FF, wireframe: true});
+geometryCone.scale(0.65, 0.65, 0.65)
+const red = new THREE.MeshLambertMaterial({color: 0xff0000, wireframe: false});
+const green = new THREE.MeshLambertMaterial({color: 0x00ff00, wireframe: false});
+const blue = new THREE.MeshLambertMaterial({color: 0x0000ff, wireframe: false});
+const yellow = new THREE.MeshLambertMaterial({color: 0xffff00, wireframe: false});
+const cyan = new THREE.MeshLambertMaterial({color: 0x4895EF, wireframe: false});
+const magenta = new THREE.MeshLambertMaterial({color: 0xE11584, wireframe: false});
 const white = new THREE.MeshLambertMaterial({color: 0xffffff, wireframe: false, transparent: true, opacity: 0.8});
 const black = new THREE.MeshLambertMaterial({color: 0x000000, wireframe: false});
 
 const geometryOrigin = new THREE.SphereGeometry(0.3, 32, 32);
 const origin = new THREE.Mesh(geometryOrigin, white)
 
-scene.add(origin)
+// scene.add(origin)
 
 const coneDQ0 = new THREE.Mesh(geometryCone, red);
 const coneDQ1 = new THREE.Mesh(geometryCone, green);
@@ -114,11 +237,11 @@ coneDQ3.quaternion.copy(dq3.real)
 
 
 
-const geometrySampleCone = new THREE.ConeGeometry(0.005, 0.025, 16, 1);
-const geometrySampleSphere = new THREE.SphereGeometry(0.0025, 32, 32);
-geometrySampleCone.translate(0, 0.0125, 0);
+const geometrySampleCone = new THREE.ConeGeometry(0.01, 0.035, 16, 1);
+const geometrySampleSphere = new THREE.SphereGeometry(0.007, 32, 32);
+geometrySampleCone.translate(0, 0.0175, 0);
 
-const nbSamples = 240;
+const nbSamples = 80;
 
 const conesLinearBlend = new THREE.InstancedMesh(geometrySampleCone, black, nbSamples);
 
@@ -194,7 +317,6 @@ function linearBlendSamples() {
 
 	conesLinearBlend.instanceMatrix.needsUpdate = true;
 }
-linearBlendSamples();
 
 
 function deCasteljau(samples, pts, n = 0) {
@@ -247,7 +369,7 @@ function bezierSamples() {
 	const dqSamples2 = deCasteljauDQ(nbSamples, [dq0.clone(), dq1.clone(), dq2.clone(), dq3.clone()],2);
 	const dqSamples3 = deCasteljauDQ(nbSamples, [dq0.clone(), dq1.clone(), dq2.clone(), dq3.clone()],3);
 
-	const scale = new THREE.Vector3(0.5, 0.5, 0.5);
+	const scale = new THREE.Vector3(0.65, 0.65, 0.65);
 	const matrix = new THREE.Matrix4();
 	for(let i = 0; i < dqSamples.length; ++i) {
 		matrix.makeTranslation(samples[i].x, samples[i].y, samples[i].z)
@@ -309,7 +431,7 @@ function fourPoints() {
 	cmapPos[cmap1.cell(vertex, fd)] = dq3.transform(world0);
 	cmapDQ[cmap1.cell(vertex, fd)] = dq3.clone();
 
-	for(let i = 0; i < 7; ++i) {
+	for(let i = 0; i < 5; ++i) {
 		const vertexCache = [];
 		cutAllEdges(cmap1, vd => {
 			vertexCache.push(vd);
@@ -333,7 +455,8 @@ function fourPoints() {
 		}, {cache: vertexCache})
 	}
 
-	const scale = new THREE.Vector3(0.125, 1, 0.125);
+	const scale = new THREE.Vector3(0.64, 0.64, 0.64);
+	// const scale = new THREE.Vector3(0.125, 1, 0.125);
 	const matrix = new THREE.Matrix4();
 	const nbVertex = cmap1.nbCells(cmap1.vertex);
 	for(let i = 0; i < nbVertex; ++i) {
@@ -346,7 +469,7 @@ function fourPoints() {
 
 fourPoints()
 const fptsRenderer = new Renderer(cmap1)
-fptsRenderer.vertices.create({color: new THREE.Color(0xff00ff)});
+fptsRenderer.vertices.create({color: new THREE.Color(0xE11584), size: 0.007});
 
 
 
@@ -412,7 +535,7 @@ function nevilleAlgorithm(target) {
 		dq2.transform(world0.clone()),
 		dq3.transform(world0.clone())]
 
-	const T = [0, 0.33, 0.66, 1]
+	const T = [0, 0.333, 0.666, 1]
 
 	const p = new THREE.Vector3;
 
@@ -462,7 +585,7 @@ function Lagrange() {
 		samples.push(nevilleAlgorithm(i / (nbSamples-1)))
 	}
 
-	const scale = new THREE.Vector3(0.25, 1, 0.25);
+	const scale = new THREE.Vector3(0.65, 0.65, 0.65);
 	const matrix = new THREE.Matrix4();
 	for(let i = 0; i < samplesDQ.length; ++i){
 		matrix.compose(samplesDQ[i].getTranslation(), samplesDQ[i].getRotation(), scale);
@@ -552,7 +675,7 @@ function catmullRomSpline() {
 	}
 
 
-	const scale = new THREE.Vector3(0.25, 1, 0.25);
+	const scale = new THREE.Vector3(0.65, 0.65, 0.65);
 	const matrix = new THREE.Matrix4();
 	for(let i = 0; i < samples.length; ++i){
 		matrix.compose(samplesDQ[i].getTranslation(), samplesDQ[i].getRotation(), scale);
@@ -635,35 +758,35 @@ hermiteSpline()
 
 
 
+linearBlendSamples();
 
 
 
 
-
-scene.add(conesLinearBlend)
-scene.add(conesGrid);
+/// lineraire interpolation
+// scene.add(conesLinearBlend)
+// scene.add(conesGrid);
 
 // scene.add(conesBezier)
 // scene.add(conesBezier1)
 // scene.add(sphereBezier)
 // scene.add(conesBezier2)
-// scene.add(conesBezier3)
+// scene.add(conesBezier3) /// good one
 
 // scene.add(conesFourPoints);
-
 // fptsRenderer.vertices.addTo(scene)
 
-scene.add(conesTriGrid);
+// scene.add(conesTriGrid);
 // scene.add(conesLagrangeDQ);
 // scene.add(conesLagrange);
 
 // scene.add(conesCatmullRom);
-// scene.add(conesCatmullRomDQ);
+scene.add(conesCatmullRomDQ);
 
-scene.add(conesHermite)
-scene.add(conesHermiteDQ)
+// scene.add(conesHermite)
+// scene.add(conesHermiteDQ)
 
-const grid = new THREE.GridHelper(1, 10)
+const grid = new THREE.GridHelper(1, 20)
 scene.add(grid)
 
 let frameCount = 0;
